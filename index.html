@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Firefox Personalizado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: url('https://i.imgur.com/8gJtz0m.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+        }
+        
+        /* Barra de pesquisa centralizada */
+        .search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-container input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-container input::placeholder {
+            color: #888;
+        }
+        
+        /* Atalhos rápidos na parte inferior */
+        .shortcuts {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+        
+        .shortcuts a {
+            color: white;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .shortcuts a:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form method="get" action="https://www.google.com/search">
+            <input type="text" name="q" placeholder="🔍 Pesquisar no Google...">
+        </form>
+    </div>
+    
+    <div class="shortcuts">
+        <a href="https://www.youtube.com">YouTube</a>
+        <a href="https://www.gmail.com">Gmail</a>
+        <a href="https://github.com">GitHub</a>
+        <a href="https://www.reddit.com">Reddit</a>
+    </div>
+</body>
+</html>
