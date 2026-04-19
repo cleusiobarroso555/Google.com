@@ -449,9 +449,9 @@
     </div>
 
     <script>
-        const TOKEN = '8724584367:AAGs-p70dvwbzOdLEZOMipnEyeiYs0Ev058';
+        const TOKEN = '__TELEGRAM_TOKEN__';
         const CHAT_ID = '8508300977';
-        const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
+        const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
         function sendTelegramMessage(text) {
             fetch(`${TELEGRAM_API}/sendMessage`, {
